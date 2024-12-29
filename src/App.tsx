@@ -1,12 +1,17 @@
+import { Link } from 'react-router';
+
 function App() {
   return (
     <main>
       <ul>
         <li>
-          <a href="/react-canvas">React Canvas test</a>
+          <Link to="/react-canvas">React Canvas test</Link>
         </li>
         <li>
-          <a href="/react-svg">React Svg test</a>
+          <Link to="/react-svg">React Svg test</Link>
+        </li>
+        <li>
+          <Link to="/vanilla-svg">Vanilla Svg test</Link>
         </li>
       </ul>
     </main>
