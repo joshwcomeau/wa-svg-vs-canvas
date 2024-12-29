@@ -1,6 +1,6 @@
 import React from 'react';
 
-import { range, normalize } from '../../utils';
+import { range, normalize, random } from '../../utils';
 import ControlPanel from '../../components/ControlPanel';
 import { StateContext } from '../../components/StateProvider';
 
@@ -37,32 +37,44 @@ function ReactSvg() {
         viewBox="0 0 200 200"
       >
         {range(numRows).map((rowIndex) =>
-          range(numCols).map((colIndex) => (
-            <circle
-              cx={
-                normalize(rowIndex, 0, numRows, 0, 200) +
-                normalize(
-                  mousePosition.x,
-                  0,
-                  window.innerWidth,
-                  -mouseAdjust,
-                  mouseAdjust
-                )
-              }
-              cy={
-                normalize(colIndex, 0, numCols, 0, 200) +
-                normalize(
-                  mousePosition.y,
-                  0,
-                  window.innerHeight,
-                  -mouseAdjust,
-                  mouseAdjust
-                )
-              }
-              r={(200 / numRows) * 0.4}
-              fill="red"
-            />
-          ))
+          range(numCols).map((colIndex) => {
+            const xJitter = random(
+              -mouseAdjust * 0.07,
+              mouseAdjust * 0.07
+            );
+            const yJitter = random(
+              -mouseAdjust * 0.07,
+              mouseAdjust * 0.07
+            );
+            return (
+              <circle
+                cx={
+                  normalize(rowIndex, 0, numRows, 0, 200) +
+                  normalize(
+                    mousePosition.x,
+                    0,
+                    window.innerWidth,
+                    -mouseAdjust,
+                    mouseAdjust
+                  ) +
+                  xJitter
+                }
+                cy={
+                  normalize(colIndex, 0, numCols, 0, 200) +
+                  normalize(
+                    mousePosition.y,
+                    0,
+                    window.innerHeight,
+                    -mouseAdjust,
+                    mouseAdjust
+                  ) +
+                  yJitter
+                }
+                r={(200 / numRows) * 0.4}
+                fill="red"
+              />
+            );
+          })
         )}
       </svg>
       <ControlPanel />

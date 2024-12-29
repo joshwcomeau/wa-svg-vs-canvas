@@ -1,6 +1,6 @@
 import React from 'react';
 
-import { normalize } from '../../utils';
+import { normalize, random } from '../../utils';
 import ControlPanel from '../../components/ControlPanel';
 import { StateContext } from '../../components/StateProvider';
 
@@ -36,6 +36,14 @@ function ReactCanvas() {
       for (let rowIndex = 0; rowIndex <= numRows; rowIndex++) {
         for (let colIndex = 0; colIndex <= numCols; colIndex++) {
           context.beginPath();
+          const xJitter = random(
+            -mouseAdjust * 0.07,
+            mouseAdjust * 0.07
+          );
+          const yJitter = random(
+            -mouseAdjust * 0.07,
+            mouseAdjust * 0.07
+          );
           const cx =
             normalize(rowIndex, 0, numRows, 0, window.innerWidth) +
             normalize(
@@ -44,7 +52,8 @@ function ReactCanvas() {
               window.innerHeight,
               -mouseAdjust * 2,
               mouseAdjust * 2
-            );
+            ) +
+            xJitter;
           const cy =
             normalize(colIndex, 0, numCols, 0, window.innerWidth) +
             normalize(
@@ -53,7 +62,8 @@ function ReactCanvas() {
               window.innerHeight,
               -mouseAdjust * 2,
               mouseAdjust * 2
-            );
+            ) +
+            yJitter;
 
           context.arc(
             cx,

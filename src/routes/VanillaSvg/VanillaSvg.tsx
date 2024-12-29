@@ -49,7 +49,7 @@ function ReactSvg() {
     return () => {
       window.removeEventListener('mousemove', handleMove);
     };
-  }, []);
+  }, [numRows, numCols, mouseAdjust]);
 
   return (
     <>
@@ -67,7 +67,6 @@ function ReactSvg() {
             const id = `${rowIndex}-${colIndex}`;
             return (
               <circle
-                key={id}
                 cx={normalize(rowIndex, 0, numRows, 0, 200)}
                 cy={normalize(colIndex, 0, numCols, 0, 200)}
                 ref={(elem) => {
