@@ -1,10 +1,14 @@
 import React from 'react';
 
 import { range, normalize } from '../../utils';
-import { NUMCOLS, NUMROWS, MOUSE_ADJUST } from '../../constants';
+import ControlPanel from '../../components/ControlPanel';
+import { StateContext } from '../../components/StateProvider';
 
 function ReactSvg() {
   const ref = React.useRef(null);
+  const { numRows, numCols, mouseAdjust } =
+    React.useContext(StateContext);
+
   const [mousePosition, setMousePosition] = React.useState({
     x: 0,
     y: 0,
@@ -32,35 +36,36 @@ function ReactSvg() {
         ref={ref}
         viewBox="0 0 200 200"
       >
-        {range(NUMROWS).map((rowIndex) =>
-          range(NUMCOLS).map((colIndex) => (
+        {range(numRows).map((rowIndex) =>
+          range(numCols).map((colIndex) => (
             <circle
               cx={
-                normalize(rowIndex, 0, NUMROWS, 0, 200) +
+                normalize(rowIndex, 0, numRows, 0, 200) +
                 normalize(
                   mousePosition.x,
                   0,
                   window.innerWidth,
-                  -MOUSE_ADJUST,
-                  MOUSE_ADJUST
+                  -mouseAdjust,
+                  mouseAdjust
                 )
               }
               cy={
-                normalize(colIndex, 0, NUMCOLS, 0, 200) +
+                normalize(colIndex, 0, numCols, 0, 200) +
                 normalize(
                   mousePosition.y,
                   0,
                   window.innerHeight,
-                  -MOUSE_ADJUST,
-                  MOUSE_ADJUST
+                  -mouseAdjust,
+                  mouseAdjust
                 )
               }
-              r={1}
+              r={(200 / numRows) * 0.4}
               fill="red"
             />
           ))
         )}
       </svg>
+      <ControlPanel />
     </>
   );
 }
