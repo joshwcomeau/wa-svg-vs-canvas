@@ -6,6 +6,7 @@ import App from './App';
 import StateProvider from './components/StateProvider';
 import ReactCanvas from './routes/ReactCanvas/';
 import ReactSvg from './routes/ReactSvg/';
+import VanillaSvg from './routes/VanillaSvg/';
 
 createRoot(document.getElementById('root')!).render(
   <StrictMode>
@@ -14,6 +15,7 @@ createRoot(document.getElementById('root')!).render(
         <Routes>
           <Route path="/react-canvas" element={<ReactCanvas />} />
           <Route path="/react-svg" element={<ReactSvg />} />
+          <Route path="/vanilla-svg" element={<VanillaSvg />} />
           <Route path="/" element={<App />} />
         </Routes>
       </BrowserRouter>
