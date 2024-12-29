@@ -81,23 +81,4 @@ function ReactCanvas() {
   );
 }
 
-const getScaledCanvasProps = (width, height, ctx) => {
-  if (!ctx) {
-    return { style: {}, width: undefined, height: undefined };
-  }
-
-  const devicePixelRatio = window.devicePixelRatio || 1;
-
-  ctx.scale(devicePixelRatio, devicePixelRatio);
-
-  return {
-    style: {
-      width,
-      height,
-    },
-    width: width * devicePixelRatio,
-    height: height * devicePixelRatio,
-  };
-};
-
 export default ReactCanvas;
