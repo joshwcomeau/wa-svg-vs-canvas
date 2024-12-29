@@ -1,9 +1,7 @@
 import React from 'react';
 
 import { range, normalize } from '../../utils';
-
-const NUMROWS = 50;
-const NUMCOLS = 50;
+import { NUMCOLS, NUMROWS, MOUSE_ADJUST } from '../../constants';
 
 function ReactSvg() {
   const ref = React.useRef(null);
@@ -28,8 +26,8 @@ function ReactSvg() {
       <svg
         style={{
           display: 'block',
-          width: '100svw',
-          height: '100svh',
+          width: 'calc(100vh - 64px)',
+          height: 'calc(100vh - 64px)',
         }}
         ref={ref}
         viewBox="0 0 200 200"
@@ -43,8 +41,8 @@ function ReactSvg() {
                   mousePosition.x,
                   0,
                   window.innerWidth,
-                  -5,
-                  5
+                  -MOUSE_ADJUST,
+                  MOUSE_ADJUST
                 )
               }
               cy={
@@ -52,9 +50,9 @@ function ReactSvg() {
                 normalize(
                   mousePosition.y,
                   0,
-                  window.innerWidth,
-                  -5,
-                  5
+                  window.innerHeight,
+                  -MOUSE_ADJUST,
+                  MOUSE_ADJUST
                 )
               }
               r={1}

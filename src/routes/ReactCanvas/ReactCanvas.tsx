@@ -1,20 +1,10 @@
 import React from 'react';
 
 import { normalize } from '../../utils';
-
-const NUMROWS = 50;
-const NUMCOLS = 50;
+import { NUMCOLS, NUMROWS, MOUSE_ADJUST } from '../../constants';
 
 function ReactCanvas() {
   const ref = React.useRef<HTMLCanvasElement>(null);
-
-  // const { style, width, height } = React.useMemo(() => {
-  //   return getScaledCanvasProps(
-  //     window.innerWidth,
-  //     window.innerHeight,
-  //     context
-  //   );
-  // }, [context]);
 
   React.useEffect(() => {
     let context: CanvasRenderingContext2D | null = null;
@@ -28,14 +18,10 @@ function ReactCanvas() {
 
       if (!context) {
         context = canvas.getContext('2d');
-        if (!context) {
-          // Stupid TS
-          return;
-        }
-
-        const devicePixelRatio = window.devicePixelRatio || 1;
-
-        context.scale(devicePixelRatio, devicePixelRatio);
+      }
+      if (!context) {
+        // Stupid TS
+        return;
       }
 
       context.clearRect(0, 0, canvas.width, canvas.height);
@@ -46,22 +32,34 @@ function ReactCanvas() {
           context.beginPath();
           const cx =
             normalize(rowIndex, 0, NUMROWS, 0, window.innerWidth) +
-            normalize(event.clientX, 0, window.innerWidth, -5, 5);
+            normalize(
+              event.clientX,
+              0,
+              window.innerHeight,
+              -MOUSE_ADJUST * 2,
+              MOUSE_ADJUST * 2
+            );
           const cy =
             normalize(colIndex, 0, NUMCOLS, 0, window.innerWidth) +
-            normalize(event.clientY, 0, window.innerWidth, -5, 5);
+            normalize(
+              event.clientY,
+              0,
+              window.innerHeight,
+              -MOUSE_ADJUST * 2,
+              MOUSE_ADJUST * 2
+            );
 
-          context.arc(cx, cy, 5, 0, Math.PI * 2);
+          context.arc(cx, cy, 7, 0, Math.PI * 2);
           context.fill();
           context.closePath();
         }
       }
     }
 
-    window.addEventListener('mousemove', handleMove);
+    window.addEventListener('pointermove', handleMove);
 
     return () => {
-      window.removeEventListener('mousemove', handleMove);
+      window.removeEventListener('pointermove', handleMove);
     };
   }, []);
 
@@ -72,11 +70,11 @@ function ReactCanvas() {
       ref={ref}
       style={{
         display: 'block',
-        width: window.innerWidth,
-        height: window.innerWidth,
+        width: window.innerHeight - 64,
+        height: window.innerHeight - 64,
       }}
-      width={window.innerWidth * devicePixelRatio}
-      height={window.innerWidth * devicePixelRatio}
+      width={(window.innerHeight - 64) * devicePixelRatio}
+      height={(window.innerHeight - 64) * devicePixelRatio}
     />
   );
 }
