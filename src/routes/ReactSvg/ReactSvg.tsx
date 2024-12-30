@@ -55,6 +55,7 @@ function ReactSvg() {
             const yJitter = random(-scaledJitter, scaledJitter);
             return (
               <circle
+                key={`${rowIndex}-${colIndex}`}
                 cx={
                   normalize(rowIndex, 0, density, 0, 200) +
                   normalize(
