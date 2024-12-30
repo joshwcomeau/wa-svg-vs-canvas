@@ -5,46 +5,84 @@ import { StateContext } from '../StateProvider';
 
 function ControlPanel() {
   const {
-    numRows,
-    mouseAdjust,
-    setNumRows,
-    setNumCols,
-    setMouseAdjust,
+    density,
+    sensitivity,
+    jitter,
+    setDensity,
+    setSensitivity,
+    setJitter,
   } = React.useContext(StateContext);
+  // const id = React.useId();
 
   return (
     <Wrapper>
       <Control>
         <Header>
           Density
-          <Value>{numRows}</Value>
+          <Value>{density}</Value>
         </Header>
         <input
           type="range"
-          value={numRows}
+          value={density}
           min={10}
           max={200}
           onChange={(ev) => {
-            setNumRows(Number(ev.target.value));
-            setNumCols(Number(ev.target.value));
+            setDensity(Number(ev.target.value));
           }}
         />
       </Control>
       <Control>
         <Header>
           Sensitivity
-          <Value>{mouseAdjust}</Value>
+          <Value>{sensitivity}</Value>
         </Header>
         <input
           type="range"
-          value={mouseAdjust}
+          value={sensitivity}
           min={1}
           max={60}
           onChange={(ev) => {
-            setMouseAdjust(Number(ev.target.value));
+            setSensitivity(Number(ev.target.value));
           }}
         />
       </Control>
+      <Control>
+        <Header>
+          Jitter
+          <Value>{jitter}</Value>
+        </Header>
+        <input
+          type="range"
+          value={jitter}
+          min={0}
+          max={5}
+          step={0.1}
+          onChange={(ev) => {
+            setJitter(Number(ev.target.value));
+          }}
+        />
+      </Control>
+      {/* <Control as="div">
+        <Header>Random Colors</Header>
+        <Row>
+          {[true, false].map((value) => (
+            <Cell key={String(value)}>
+              <input
+                type="radio"
+                id={`${id}-${String(value)}`}
+                value={String(value)}
+                checked={enableRandomColors === value}
+                onChange={() => {
+                  setEnableRandomColors(value);
+                }}
+              />
+              <Label htmlFor={`${id}-${String(value)}`}>
+                {String(value)}
+              </Label>
+            </Cell>
+          ))}
+        </Row>
+      </Control> */}
     </Wrapper>
   );
 }
@@ -53,6 +91,9 @@ const Wrapper = styled.div`
   position: absolute;
   top: 8px;
   left: 8px;
+  display: flex;
+  flex-direction: column;
+  gap: 24px;
   padding: 16px;
   background: hsl(210deg 10% 16%);
   color: white;
@@ -70,6 +111,19 @@ const Header = styled.div`
   gap: 32px;
 `;
 const Value = styled.span`
+  font-size: 0.875rem;
+`;
+
+const Row = styled.div`
+  display: flex;
+  gap: 32px;
+`;
+const Cell = styled.div`
+  display: flex;
+  align-items: center;
+  gap: 8px;
+`;
+const Label = styled.label`
   font-size: 0.875rem;
 `;
 

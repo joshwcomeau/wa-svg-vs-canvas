@@ -1,13 +1,24 @@
 import React from 'react';
 
 import { normalize, random } from '../../utils';
+import useWindowDimensions from '../../hooks/use-window-dimensions';
 import ControlPanel from '../../components/ControlPanel';
 import { StateContext } from '../../components/StateProvider';
 
 function ReactCanvas() {
   const ref = React.useRef<HTMLCanvasElement>(null);
-  const { numRows, numCols, mouseAdjust } =
+  const { density, sensitivity, jitter } =
     React.useContext(StateContext);
+
+  const windowDimensions = useWindowDimensions({ throttleBy: 25 });
+
+  const relevantDimension = Math.min(
+    windowDimensions.width,
+    windowDimensions.height
+  );
+
+  const devicePixelRatio = window.devicePixelRatio || 1;
+  const innerSize = relevantDimension - 64;
 
   React.useEffect(() => {
     let context: CanvasRenderingContext2D | null = null;
@@ -25,7 +36,6 @@ function ReactCanvas() {
           // Stupid TS
           return;
         }
-        const devicePixelRatio = window.devicePixelRatio || 1;
 
         context.scale(devicePixelRatio, devicePixelRatio);
       }
@@ -33,45 +43,41 @@ function ReactCanvas() {
       context.clearRect(0, 0, canvas.width, canvas.height);
       context.fillStyle = 'red';
 
-      for (let rowIndex = 0; rowIndex <= numRows; rowIndex++) {
-        for (let colIndex = 0; colIndex <= numCols; colIndex++) {
+      for (let rowIndex = 0; rowIndex <= density; rowIndex++) {
+        for (let colIndex = 0; colIndex <= density; colIndex++) {
           context.beginPath();
-          const xJitter = random(
-            -mouseAdjust * 0.07,
-            mouseAdjust * 0.07
-          );
-          const yJitter = random(
-            -mouseAdjust * 0.07,
-            mouseAdjust * 0.07
-          );
+          const xJitter = random(-jitter, jitter);
+          const yJitter = random(-jitter, jitter);
+
           const cx =
-            normalize(rowIndex, 0, numRows, 0, window.innerWidth) +
+            normalize(rowIndex, 0, density, 0, innerSize) +
             normalize(
               event.clientX,
               0,
-              window.innerHeight,
-              -mouseAdjust * 2,
-              mouseAdjust * 2
+              innerSize,
+              -sensitivity * 2,
+              sensitivity * 2
             ) +
             xJitter;
           const cy =
-            normalize(colIndex, 0, numCols, 0, window.innerWidth) +
+            normalize(colIndex, 0, density, 0, innerSize) +
             normalize(
               event.clientY,
               0,
-              window.innerHeight,
-              -mouseAdjust * 2,
-              mouseAdjust * 2
+              innerSize,
+              -sensitivity * 2,
+              sensitivity * 2
             ) +
             yJitter;
 
           context.arc(
             cx,
             cy,
-            (window.innerHeight / numRows) * 0.4,
+            (innerSize / density) * 0.4,
             0,
             Math.PI * 2
           );
+
           context.fill();
           context.closePath();
         }
@@ -82,11 +88,12 @@ function ReactCanvas() {
 
     return () => {
       window.removeEventListener('pointermove', handleMove);
-      context?.scale(1 / devicePixelRatio, 1 / devicePixelRatio);
+      context?.scale(
+        1 / window.devicePixelRatio,
+        1 / window.devicePixelRatio
+      );
     };
-  }, [numRows, numCols, mouseAdjust]);
-
-  const devicePixelRatio = window.devicePixelRatio || 1;
+  }, [density, sensitivity, jitter, devicePixelRatio, innerSize]);
 
   return (
     <>
@@ -94,11 +101,11 @@ function ReactCanvas() {
         ref={ref}
         style={{
           display: 'block',
-          width: window.innerHeight - 64,
-          height: window.innerHeight - 64,
+          width: innerSize,
+          height: innerSize,
         }}
-        width={(window.innerHeight - 64) * devicePixelRatio}
-        height={(window.innerHeight - 64) * devicePixelRatio}
+        width={innerSize * devicePixelRatio}
+        height={innerSize * devicePixelRatio}
       />
       <ControlPanel />
     </>

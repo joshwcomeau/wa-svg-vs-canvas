@@ -1,31 +1,35 @@
 /* eslint-disable */
 import * as React from 'react';
 
-import { NUMROWS, NUMCOLS, MOUSE_ADJUST } from '../../constants';
-
 export const StateContext = React.createContext({
-  numRows: NUMROWS,
-  numCols: NUMCOLS,
-  mouseAdjust: MOUSE_ADJUST,
-  setNumRows: (_: number) => {},
-  setNumCols: (_: number) => {},
-  setMouseAdjust: (_: number) => {},
+  density: 50,
+  sensitivity: 40,
+  jitter: 0,
+  enableRandomColors: false,
+  setDensity: (_: number) => {},
+  setSensitivity: (_: number) => {},
+  setJitter: (_: number) => {},
+  setEnableRandomColors: (_: boolean) => {},
 });
 
 function StateProvider({ children }: { children: React.ReactNode }) {
-  const [numRows, setNumRows] = React.useState(NUMROWS);
-  const [numCols, setNumCols] = React.useState(NUMCOLS);
-  const [mouseAdjust, setMouseAdjust] = React.useState(MOUSE_ADJUST);
+  const [density, setDensity] = React.useState(50);
+  const [sensitivity, setSensitivity] = React.useState(40);
+  const [jitter, setJitter] = React.useState(0);
+  const [enableRandomColors, setEnableRandomColors] =
+    React.useState(true);
 
   return (
     <StateContext.Provider
       value={{
-        numRows,
-        numCols,
-        mouseAdjust,
-        setNumRows,
-        setNumCols,
-        setMouseAdjust,
+        density,
+        sensitivity,
+        jitter,
+        enableRandomColors,
+        setDensity,
+        setSensitivity,
+        setJitter,
+        setEnableRandomColors,
       }}
     >
       {children}

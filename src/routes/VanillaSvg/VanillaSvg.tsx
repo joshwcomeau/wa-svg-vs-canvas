@@ -1,6 +1,6 @@
 import React from 'react';
 
-import { range, normalize } from '../../utils';
+import { range, normalize, random } from '../../utils';
 import ControlPanel from '../../components/ControlPanel';
 import { StateContext } from '../../components/StateProvider';
 
@@ -20,6 +20,15 @@ function ReactSvg() {
             continue;
           }
 
+          const xJitter = random(
+            -mouseAdjust * 0.025,
+            mouseAdjust * 0.025
+          );
+          const yJitter = random(
+            -mouseAdjust * 0.025,
+            mouseAdjust * 0.025
+          );
+
           const cx =
             normalize(rowIndex, 0, numRows, 0, 200) +
             normalize(
@@ -28,7 +37,8 @@ function ReactSvg() {
               window.innerWidth,
               -mouseAdjust,
               mouseAdjust
-            );
+            ) +
+            xJitter;
           const cy =
             normalize(colIndex, 0, numCols, 0, 200) +
             normalize(
@@ -37,17 +47,18 @@ function ReactSvg() {
               window.innerHeight,
               -mouseAdjust,
               mouseAdjust
-            );
+            ) +
+            yJitter;
 
           elem.setAttribute('cx', String(cx));
           elem.setAttribute('cy', String(cy));
         }
       }
     }
-    window.addEventListener('mousemove', handleMove);
+    window.addEventListener('pointermove', handleMove);
 
     return () => {
-      window.removeEventListener('mousemove', handleMove);
+      window.removeEventListener('pointermove', handleMove);
     };
   }, [numRows, numCols, mouseAdjust]);
 

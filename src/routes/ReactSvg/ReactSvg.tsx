@@ -1,12 +1,14 @@
 import React from 'react';
 
 import { range, normalize, random } from '../../utils';
+import useWindowDimensions from '../../hooks/use-window-dimensions';
+
 import ControlPanel from '../../components/ControlPanel';
 import { StateContext } from '../../components/StateProvider';
 
 function ReactSvg() {
   const ref = React.useRef(null);
-  const { numRows, numCols, mouseAdjust } =
+  const { density, sensitivity, jitter } =
     React.useContext(StateContext);
 
   const [mousePosition, setMousePosition] = React.useState({
@@ -14,14 +16,25 @@ function ReactSvg() {
     y: 0,
   });
 
+  const windowDimensions = useWindowDimensions({ throttleBy: 25 });
+
+  const relevantDimension = Math.min(
+    windowDimensions.width,
+    windowDimensions.height
+  );
+
+  const innerSize = relevantDimension - 64;
+
+  const scaledJitter = jitter * (200 / innerSize);
+
   React.useEffect(() => {
     function handleMove(event: any) {
       setMousePosition({ x: event.clientX, y: event.clientY });
     }
-    window.addEventListener('mousemove', handleMove);
+    window.addEventListener('pointermove', handleMove);
 
     return () => {
-      window.removeEventListener('mousemove', handleMove);
+      window.removeEventListener('pointermove', handleMove);
     };
   }, []);
 
@@ -30,47 +43,41 @@ function ReactSvg() {
       <svg
         style={{
           display: 'block',
-          width: 'calc(100vh - 64px)',
-          height: 'calc(100vh - 64px)',
+          width: innerSize,
+          height: innerSize,
         }}
         ref={ref}
         viewBox="0 0 200 200"
       >
-        {range(numRows).map((rowIndex) =>
-          range(numCols).map((colIndex) => {
-            const xJitter = random(
-              -mouseAdjust * 0.07,
-              mouseAdjust * 0.07
-            );
-            const yJitter = random(
-              -mouseAdjust * 0.07,
-              mouseAdjust * 0.07
-            );
+        {range(density).map((rowIndex) =>
+          range(density).map((colIndex) => {
+            const xJitter = random(-scaledJitter, scaledJitter);
+            const yJitter = random(-scaledJitter, scaledJitter);
             return (
               <circle
                 cx={
-                  normalize(rowIndex, 0, numRows, 0, 200) +
+                  normalize(rowIndex, 0, density, 0, 200) +
                   normalize(
                     mousePosition.x,
                     0,
                     window.innerWidth,
-                    -mouseAdjust,
-                    mouseAdjust
+                    -sensitivity,
+                    sensitivity
                   ) +
                   xJitter
                 }
                 cy={
-                  normalize(colIndex, 0, numCols, 0, 200) +
+                  normalize(colIndex, 0, density, 0, 200) +
                   normalize(
                     mousePosition.y,
                     0,
                     window.innerHeight,
-                    -mouseAdjust,
-                    mouseAdjust
+                    -sensitivity,
+                    sensitivity
                   ) +
                   yJitter
                 }
-                r={(200 / numRows) * 0.4}
+                r={(200 / density) * 0.4}
                 fill="red"
               />
             );
