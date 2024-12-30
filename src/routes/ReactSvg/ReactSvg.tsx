@@ -12,8 +12,8 @@ function ReactSvg() {
     React.useContext(StateContext);
 
   const [mousePosition, setMousePosition] = React.useState({
-    x: 0,
-    y: 0,
+    x: window.innerWidth / 2,
+    y: window.innerHeight / 2,
   });
 
   const windowDimensions = useWindowDimensions({ throttleBy: 25 });

@@ -71,8 +71,9 @@ body {
 #root {
   display: grid;
   place-content: center;
-  width: 100vw;
-  height: 100svh;
+  width: calc(100vw - 50px);
+  min-height: 100svh;
+  margin-inline: auto;
 }
 
 a {

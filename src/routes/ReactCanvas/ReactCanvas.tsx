@@ -54,7 +54,7 @@ function ReactCanvas() {
             normalize(
               event.clientX,
               0,
-              innerSize,
+              innerSize * devicePixelRatio,
               -sensitivity * 2,
               sensitivity * 2
             ) +
@@ -64,7 +64,7 @@ function ReactCanvas() {
             normalize(
               event.clientY,
               0,
-              innerSize,
+              (window.innerHeight - 64) * devicePixelRatio,
               -sensitivity * 2,
               sensitivity * 2
             ) +
@@ -85,6 +85,11 @@ function ReactCanvas() {
     }
 
     window.addEventListener('pointermove', handleMove);
+
+    handleMove({
+      clientX: window.innerWidth / 2,
+      clientY: window.innerHeight / 2,
+    });
 
     return () => {
       window.removeEventListener('pointermove', handleMove);

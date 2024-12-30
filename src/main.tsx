@@ -13,8 +13,8 @@ createRoot(document.getElementById('root')!).render(
     <StateProvider>
       <BrowserRouter>
         <Routes>
-          <Route path="/react-canvas" element={<ReactCanvas />} />
-          <Route path="/react-svg" element={<ReactSvg />} />
+          <Route path="/toucan" element={<ReactCanvas />} />
+          <Route path="/goose" element={<ReactSvg />} />
           <Route path="/vanilla-svg" element={<VanillaSvg />} />
           <Route path="/" element={<App />} />
         </Routes>
