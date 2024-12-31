@@ -26,6 +26,7 @@ function ControlPanel() {
           value={density}
           min={10}
           max={200}
+          step={10}
           onChange={(ev) => {
             setDensity(Number(ev.target.value));
           }}
