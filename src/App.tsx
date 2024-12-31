@@ -48,6 +48,7 @@ const Main = styled.main`
   margin-inline: auto;
   color: white;
   padding: 32px;
+  padding-bottom: 128px;
 
   h1 {
     font-size: 2rem;
