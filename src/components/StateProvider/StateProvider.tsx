@@ -2,7 +2,7 @@
 import * as React from 'react';
 
 export const StateContext = React.createContext({
-  density: 50,
+  density: 30,
   sensitivity: 40,
   jitter: 0,
   enableRandomColors: false,
