@@ -89,14 +89,21 @@ function ControlPanel() {
 
 const Wrapper = styled.div`
   position: absolute;
-  top: 8px;
+  bottom: 8px;
   left: 8px;
   display: flex;
   flex-direction: column;
   gap: 24px;
   padding: 16px;
+  border-radius: 8px;
   background: hsl(210deg 10% 16%);
   color: white;
+  touch-action: none;
+  user-select: none;
+
+  @media (max-width: 38rem) {
+    right: 8px;
+  }
 `;
 
 const Control = styled.label`

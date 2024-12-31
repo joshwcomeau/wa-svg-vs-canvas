@@ -1,7 +1,11 @@
+//
+// TEST: GOOSE
+//
 import React from 'react';
+import styled from 'styled-components';
 
 import { range, normalize, random } from '../../utils';
-import useWindowDimensions from '../../hooks/use-window-dimensions';
+import useInnerSize from '../../hooks/use-inner-size';
 
 import ControlPanel from '../../components/ControlPanel';
 import { StateContext } from '../../components/StateProvider';
@@ -16,16 +20,10 @@ function ReactSvg() {
     y: window.innerHeight / 2,
   });
 
-  const windowDimensions = useWindowDimensions({ throttleBy: 25 });
-
-  const relevantDimension = Math.min(
-    windowDimensions.width,
-    windowDimensions.height
-  );
-
-  const innerSize = relevantDimension - 64;
+  const innerSize = useInnerSize();
 
   const scaledJitter = jitter * (200 / innerSize);
+  const scaledSensitivity = sensitivity * (200 / innerSize) * 1.5;
 
   React.useEffect(() => {
     function handleMove(event: any) {
@@ -40,54 +38,73 @@ function ReactSvg() {
 
   return (
     <>
-      <svg
-        style={{
-          display: 'block',
-          width: innerSize,
-          height: innerSize,
-        }}
-        ref={ref}
-        viewBox="0 0 200 200"
-      >
-        {range(density).map((rowIndex) =>
-          range(density).map((colIndex) => {
-            const xJitter = random(-scaledJitter, scaledJitter);
-            const yJitter = random(-scaledJitter, scaledJitter);
-            return (
-              <circle
-                key={`${rowIndex}-${colIndex}`}
-                cx={
-                  normalize(rowIndex, 0, density, 0, 200) +
-                  normalize(
-                    mousePosition.x,
-                    0,
-                    window.innerWidth,
-                    -sensitivity,
-                    sensitivity
-                  ) +
-                  xJitter
-                }
-                cy={
-                  normalize(colIndex, 0, density, 0, 200) +
-                  normalize(
-                    mousePosition.y,
-                    0,
-                    window.innerHeight,
-                    -sensitivity,
-                    sensitivity
-                  ) +
-                  yJitter
-                }
-                r={(200 / density) * 0.4}
-                fill="red"
-              />
-            );
-          })
-        )}
-      </svg>
+      <h1>Goose</h1>
+      <Wrapper>
+        <Svg
+          style={{
+            width: innerSize,
+            height: innerSize,
+          }}
+          ref={ref}
+          viewBox="0 0 200 200"
+        >
+          {range(density).map((rowIndex) =>
+            range(density).map((colIndex) => {
+              const xJitter = random(-scaledJitter, scaledJitter, {
+                rounded: false,
+              });
+              const yJitter = random(-scaledJitter, scaledJitter, {
+                rounded: false,
+              });
+              return (
+                <circle
+                  key={`${rowIndex}-${colIndex}`}
+                  cx={
+                    normalize(rowIndex, 0, density, 0, 200) +
+                    normalize(
+                      mousePosition.x,
+                      0,
+                      window.innerWidth,
+                      -scaledSensitivity,
+                      scaledSensitivity
+                    ) +
+                    xJitter
+                  }
+                  cy={
+                    normalize(colIndex, 0, density, 0, 200) +
+                    normalize(
+                      mousePosition.y,
+                      0,
+                      window.innerHeight,
+                      -scaledSensitivity,
+                      scaledSensitivity
+                    ) +
+                    yJitter +
+                    16 * (200 / innerSize)
+                  }
+                  r={(200 / density) * 0.4}
+                  fill="red"
+                />
+              );
+            })
+          )}
+        </Svg>
+      </Wrapper>
       <ControlPanel />
     </>
   );
 }
+
+const Svg = styled.svg`
+  display: block;
+  touch-action: none;
+`;
+
+const Wrapper = styled.div`
+  border: 3px solid red;
+  width: fit-content;
+  height: fit-content;
+  border-radius: 5px;
+`;
 
 export default ReactSvg;

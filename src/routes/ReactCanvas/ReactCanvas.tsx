@@ -1,7 +1,12 @@
+//
+// TEST: TOUCAN
+//
 import React from 'react';
+import styled from 'styled-components';
 
 import { normalize, random } from '../../utils';
-import useWindowDimensions from '../../hooks/use-window-dimensions';
+import useInnerSize from '../../hooks/use-inner-size';
+
 import ControlPanel from '../../components/ControlPanel';
 import { StateContext } from '../../components/StateProvider';
 
@@ -10,15 +15,8 @@ function ReactCanvas() {
   const { density, sensitivity, jitter } =
     React.useContext(StateContext);
 
-  const windowDimensions = useWindowDimensions({ throttleBy: 25 });
-
-  const relevantDimension = Math.min(
-    windowDimensions.width,
-    windowDimensions.height
-  );
-
   const devicePixelRatio = window.devicePixelRatio || 1;
-  const innerSize = relevantDimension - 64;
+  const innerSize = useInnerSize();
 
   React.useEffect(() => {
     let context: CanvasRenderingContext2D | null = null;
@@ -46,8 +44,8 @@ function ReactCanvas() {
       for (let rowIndex = 0; rowIndex <= density; rowIndex++) {
         for (let colIndex = 0; colIndex <= density; colIndex++) {
           context.beginPath();
-          const xJitter = random(-jitter, jitter);
-          const yJitter = random(-jitter, jitter);
+          const xJitter = random(-jitter, jitter, { rounded: false });
+          const yJitter = random(-jitter, jitter, { rounded: false });
 
           const cx =
             normalize(rowIndex, 0, density, 0, innerSize) +
@@ -64,11 +62,12 @@ function ReactCanvas() {
             normalize(
               event.clientY,
               0,
-              (window.innerHeight - 64) * devicePixelRatio,
+              innerSize * devicePixelRatio,
               -sensitivity * 2,
               sensitivity * 2
             ) +
-            yJitter;
+            yJitter +
+            32;
 
           context.arc(
             cx,
@@ -102,19 +101,34 @@ function ReactCanvas() {
 
   return (
     <>
-      <canvas
-        ref={ref}
-        style={{
-          display: 'block',
-          width: innerSize,
-          height: innerSize,
-        }}
-        width={innerSize * devicePixelRatio}
-        height={innerSize * devicePixelRatio}
-      />
+      <h1>Toucan</h1>
+
+      <Wrapper>
+        <Canvas
+          ref={ref}
+          style={{
+            width: innerSize,
+            height: innerSize,
+          }}
+          width={innerSize * devicePixelRatio}
+          height={innerSize * devicePixelRatio}
+        />
+      </Wrapper>
       <ControlPanel />
     </>
   );
 }
+
+const Canvas = styled.canvas`
+  display: block;
+  touch-action: none;
+`;
+
+const Wrapper = styled.div`
+  border: 3px solid red;
+  width: fit-content;
+  height: fit-content;
+  border-radius: 5px;
+`;
 
 export default ReactCanvas;

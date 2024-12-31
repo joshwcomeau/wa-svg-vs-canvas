@@ -68,18 +68,25 @@ body {
   line-height: 1.5;
 }
 
+h1 {
+  font-size: 1.75rem;
+  font-weight: bold;
+  text-align: center;
+  color: white;
+  margin-bottom: 16px;
+}
+
 #root {
-  display: grid;
-  place-content: center;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  padding-top: 32px;
   width: calc(100vw - 50px);
   min-height: 100svh;
   margin-inline: auto;
 }
 
 a {
-  color: hotpink;
-}
-svg,
-canvas {
-  outline: 3px solid red;
+  color: hsl(45deg 100% 65%);
+  color: oklch(0.86 0.2 86.85);
 }

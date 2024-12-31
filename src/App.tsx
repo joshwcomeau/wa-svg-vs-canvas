@@ -12,18 +12,20 @@ function App() {
       <h2>Instructions</h2>
       <Mouse>
         For each page linked below, move your mouse across the screen.
-        This should create a bunch of red circles that respond to your
-        cursor position.
+        The red circles should respond to your cursor position.
       </Mouse>
 
       <Touch>
         For each page linked below, drag your finger across the
-        screen. This should create a bunch of red circles that respond
-        to touch.
+        screen, within the red box. The red circles should respond to
+        your touch, following your finger.
       </Touch>
       <p>
-        Drag the "Density" slider until it starts to feel laggy. Let
-        me know what the density was for each page.
+        The "Density" slider will increase the number of red circles
+        in the box. Your mission is to figure out the maximum density
+        before it starts to feel laggy. Tweak the "Density" value
+        until there is a noticeable performance dip, and then let me
+        know what the Density value is, for each test.
       </p>
 
       <ul>
@@ -32,6 +34,9 @@ function App() {
         </li>
         <li>
           <Link to="/toucan">Test 2: Codename Toucan</Link>
+        </li>
+        <li>
+          <Link to="/toucan">Test 3: Codename Puffin</Link>
         </li>
       </ul>
     </Main>
@@ -47,6 +52,7 @@ const Main = styled.main`
   h1 {
     font-size: 2rem;
     margin-bottom: 2rem;
+    text-align: left;
   }
   h2 {
     font-size: 1.325rem;
@@ -60,6 +66,10 @@ const Main = styled.main`
 
   ul {
     margin-top: 3rem;
+
+    li {
+      margin-bottom: 0.5rem;
+    }
   }
 `;
 
