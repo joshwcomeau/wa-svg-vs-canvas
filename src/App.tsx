@@ -57,7 +57,7 @@ const Main = styled.main`
   max-width: 38rem;
   margin-inline: auto;
   color: white;
-  padding: 32px;
+  padding-top: 32px;
   padding-bottom: 128px;
 
   h1 {
@@ -76,7 +76,7 @@ const Main = styled.main`
   }
 
   ul {
-    margin-top: 3rem;
+    margin-block: 3rem;
 
     li {
       margin-bottom: 0.5rem;
