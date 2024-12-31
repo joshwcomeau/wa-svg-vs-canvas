@@ -39,6 +39,16 @@ function App() {
           <Link to="/puffin">Test 3: Codename Puffin</Link>
         </li>
       </ul>
+
+      <p>
+        You can use the other controls, <i>Sensitivity</i> and{' '}
+        <i>Jitter</i>, to help you evaluate smoothness.
+      </p>
+      <p>
+        It can be hard to tell exactly where the smoothness stops.
+        Don’t worry too much about whether it’s 110 or 120. I’m trying
+        to get a big-picture idea, so approximate values are fine.
+      </p>
     </Main>
   );
 }
