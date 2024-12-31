@@ -36,7 +36,7 @@ function App() {
           <Link to="/toucan">Test 2: Codename Toucan</Link>
         </li>
         <li>
-          <Link to="/toucan">Test 3: Codename Puffin</Link>
+          <Link to="/puffin">Test 3: Codename Puffin</Link>
         </li>
       </ul>
     </Main>
