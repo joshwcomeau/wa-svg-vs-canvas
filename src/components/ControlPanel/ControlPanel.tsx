@@ -41,7 +41,7 @@ function ControlPanel() {
           type="range"
           value={sensitivity}
           min={1}
-          max={60}
+          max={120}
           onChange={(ev) => {
             setSensitivity(Number(ev.target.value));
           }}

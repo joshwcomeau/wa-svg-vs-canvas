@@ -13,7 +13,7 @@ export const StateContext = React.createContext({
 });
 
 function StateProvider({ children }: { children: React.ReactNode }) {
-  const [density, setDensity] = React.useState(50);
+  const [density, setDensity] = React.useState(30);
   const [sensitivity, setSensitivity] = React.useState(40);
   const [jitter, setJitter] = React.useState(0);
   const [enableRandomColors, setEnableRandomColors] =
