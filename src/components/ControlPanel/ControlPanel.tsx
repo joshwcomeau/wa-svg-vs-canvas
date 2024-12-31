@@ -114,17 +114,17 @@ const Value = styled.span`
   font-size: 0.875rem;
 `;
 
-const Row = styled.div`
-  display: flex;
-  gap: 32px;
-`;
-const Cell = styled.div`
-  display: flex;
-  align-items: center;
-  gap: 8px;
-`;
-const Label = styled.label`
-  font-size: 0.875rem;
-`;
+// const Row = styled.div`
+//   display: flex;
+//   gap: 32px;
+// `;
+// const Cell = styled.div`
+//   display: flex;
+//   align-items: center;
+//   gap: 8px;
+// `;
+// const Label = styled.label`
+//   font-size: 0.875rem;
+// `;
 
 export default ControlPanel;
