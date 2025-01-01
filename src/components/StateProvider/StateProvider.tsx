@@ -1,5 +1,6 @@
 /* eslint-disable */
 import * as React from 'react';
+import { useLocation } from 'react-router';
 
 export const StateContext = React.createContext({
   density: 30,
@@ -18,6 +19,14 @@ function StateProvider({ children }: { children: React.ReactNode }) {
   const [jitter, setJitter] = React.useState(0);
   const [enableRandomColors, setEnableRandomColors] =
     React.useState(true);
+
+  const location = useLocation();
+
+  React.useEffect(() => {
+    setDensity(30);
+    setSensitivity(40);
+    setJitter(0);
+  }, [location]);
 
   return (
     <StateContext.Provider

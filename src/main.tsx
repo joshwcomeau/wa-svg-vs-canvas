@@ -11,8 +11,8 @@ import VanillaSvg from './routes/VanillaSvg/';
 
 createRoot(document.getElementById('root')!).render(
   <StrictMode>
-    <StateProvider>
-      <BrowserRouter>
+    <BrowserRouter>
+      <StateProvider>
         <Routes>
           <Route
             path="/goose"
@@ -43,7 +43,7 @@ createRoot(document.getElementById('root')!).render(
           />
           <Route path="/" element={<App />} />
         </Routes>
-      </BrowserRouter>
-    </StateProvider>
+      </StateProvider>
+    </BrowserRouter>
   </StrictMode>
 );
