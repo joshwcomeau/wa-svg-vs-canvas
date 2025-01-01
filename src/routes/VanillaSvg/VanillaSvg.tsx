@@ -23,7 +23,6 @@ function ReactSvg() {
 
   React.useEffect(() => {
     function handleMove(event: any) {
-      console.log(event.clientX);
       for (let rowIndex = 0; rowIndex <= density; rowIndex++) {
         for (let colIndex = 0; colIndex <= density; colIndex++) {
           const id = `${rowIndex}-${colIndex}`;
